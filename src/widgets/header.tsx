@@ -2,10 +2,11 @@
 
 import { CirclePlus, CircleUserRound, House, Moon, Sun } from "lucide-react";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 import { Tooltip } from "../shared/tooltip";
 import { usePathname } from "next/navigation";
 import Button from "../shared/button";
+import { useTheme } from "next-themes";
 
 interface NavLink {
   id: number;
@@ -30,15 +31,15 @@ const navLinks: NavLink[] = [
 ];
 
 const Header: React.FC = () => {
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const { theme, setTheme } = useTheme();
   const currentPath = usePathname();
 
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
-    <header className="flex justify-between items-center px-4 bg-white shadow-md rounded-xl w-[560px] h-16 fixed top-4 z-10">
+    <header className="flex justify-between items-center px-4 bg-white shadow-md rounded-xl w-[560px] h-16 fixed top-4 z-10 dark:bg-[#0a0a0a]">
       <nav>
         <ul className="flex items-center gap-4">
           {navLinks.map((item) => {
@@ -61,7 +62,7 @@ const Header: React.FC = () => {
         </ul>
       </nav>
       <div className="flex items-center gap-5">
-        {isDarkMode ? (
+        {theme === "dark" ? (
           <Tooltip text="Dark Mode">
             <button className="cursor-pointer" onClick={toggleDarkMode}>
               <Moon color="#373737" />
